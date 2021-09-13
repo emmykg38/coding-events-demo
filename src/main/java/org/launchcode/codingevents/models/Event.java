@@ -1,8 +1,7 @@
 package org.launchcode.codingevents.models;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
+import java.util.Date;
 import java.util.Objects;
 
 /**
@@ -24,11 +23,32 @@ public class Event {
     @Email(message = "Invalid email. Try again.")
     private String contactEmail;
 
-    public Event(String name, String description, String contactEmail) {
+    @NotBlank(message = "Event location is required")
+    @NotNull
+    private String location;
+
+    @AssertTrue(message = "Event registration must be required")
+    private boolean registrationRequired;
+
+    //fix this, blank value. not null and not blank didn't work
+    @Min(value = 1, message = "Event needs at least one participant!")
+    private int numberOfAttendees;
+
+    @Future(message = "Must be future event")
+    private Date date;
+
+
+
+    public Event(String name, String description, String contactEmail, String location,
+                 boolean registrationRequired, int numberOfAttendees, Date date) {
         this();
         this.name = name;
         this.description = description;
         this.contactEmail = contactEmail;
+        this.location = location;
+        this.registrationRequired = registrationRequired;
+        this.numberOfAttendees = numberOfAttendees;
+        this.date = date;
     }
 
     public Event() {
@@ -58,6 +78,41 @@ public class Event {
 
     public void setContactEmail(String contactEmail) {
         this.contactEmail = contactEmail;
+    }
+
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
+    public boolean isRegistrationRequired() {
+        return registrationRequired;
+    }
+
+    //wondering if I shouldn't include setter, to make sure it can only be true
+    //after initialization
+    public void setRegistrationRequired(boolean registrationRequired) {
+        this.registrationRequired = registrationRequired;
+    }
+
+
+    public int getNumberOfAttendees() {
+        return numberOfAttendees;
+    }
+
+    public void setNumberOfAttendees(int numberOfAttendees) {
+        this.numberOfAttendees = numberOfAttendees;
+    }
+
+    public Date getDate() {
+        return date;
+    }
+
+    public void setDate(Date date) {
+        this.date = date;
     }
 
     public int getId() {
